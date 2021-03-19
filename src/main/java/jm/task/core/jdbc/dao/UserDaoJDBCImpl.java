@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
-    private final Util u = new Util();
+    private final Util u = Util.getInstance();
     public UserDaoJDBCImpl() {
 
     }
@@ -20,18 +20,16 @@ public class UserDaoJDBCImpl implements UserDao {
                     "name varchar(255)," +
                     "lastName varchar(255)," +
                     "age TINYINT)");
-            System.out.println("Таблица создана");
         } catch (SQLException e) {
-            System.out.println("Не удалось создать таблицу");
+            e.printStackTrace();
         }
     }
 
     public void dropUsersTable() {
         try(Connection con = u.getConnection(); Statement st = con.createStatement()) {
             st.executeUpdate("DROP TABLE users");
-            System.out.println("Таблица удалена");
         } catch (SQLException e) {
-            System.out.println("Не удалось удалить таблицу");
+            e.printStackTrace();
         }
     }
 
@@ -43,9 +41,8 @@ public class UserDaoJDBCImpl implements UserDao {
             ps.setString(2, lastName);
             ps.setByte(3, age);
             ps.executeUpdate();
-            System.out.println("User с именем - " + name + " добавлен в базу данных");
         } catch (SQLException e) {
-            System.out.println("Не удалось сохранить user");
+            e.printStackTrace();
         }
 
     }
@@ -53,9 +50,8 @@ public class UserDaoJDBCImpl implements UserDao {
     public void removeUserById(long id) {
         try(Connection con = u.getConnection(); Statement st = con.createStatement()) {
             st.executeUpdate("DELETE FROM users WHERE id = " + id);
-            System.out.println("User с id " + id + " удален");
         } catch (SQLException e) {
-            System.out.println("Не удалось удалить user с таким id");
+            e.printStackTrace();
         }
 
     }
@@ -73,7 +69,7 @@ public class UserDaoJDBCImpl implements UserDao {
                 list.add(user);
             }
         } catch (SQLException e) {
-            System.out.println("Не удалось получить список");
+            e.printStackTrace();
         }
         return list;
     }
@@ -81,9 +77,8 @@ public class UserDaoJDBCImpl implements UserDao {
         public void cleanUsersTable() {
             try (Connection con = u.getConnection(); Statement st = con.createStatement()) {
                 st.executeUpdate("TRUNCATE users");
-                System.out.println("Таблица очищена");
             } catch (SQLException e) {
-                System.out.println("Не удалось очистить таблицу");
+                e.printStackTrace();
             }
     }
 }

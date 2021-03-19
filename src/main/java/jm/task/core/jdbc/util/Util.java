@@ -10,9 +10,15 @@ public class Util {
     private final String USERNAME = "root";
     private final String PASSWORD = "root";
     private Connection con;
+    private static Util instance;
 
-    public Util() {
+    private Util() {}
 
+    public static Util getInstance() {
+        if (instance == null) {
+            return new Util();
+        }
+        return instance;
     }
 
     public Connection getConnection() {
